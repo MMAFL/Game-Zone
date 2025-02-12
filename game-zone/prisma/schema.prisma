@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model categories {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique(map: "name") @db.VarChar(255)
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  games     games[]
+}
+
+model games {
+  id          Int         @id @default(autoincrement())
+  title       String      @db.VarChar(255)
+  description String      @db.Text
+  thumbnail   String      @db.VarChar(255)
+  game_file   String      @db.VarChar(255)
+  createdAt   DateTime    @db.DateTime(0)
+  updatedAt   DateTime    @db.DateTime(0)
+  category_id Int?
+  categories  categories? @relation(fields: [category_id], references: [id], map: "games_ibfk_1")
+  scores      scores[]
+
+  @@index([category_id], map: "category_id")
+}
+
+model messages {
+  id        Int      @id @default(autoincrement())
+  content   String   @db.Text
+  user_id   Int
+  room_id   Int
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  users     users    @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "messages_ibfk_1")
+  rooms     rooms    @relation(fields: [room_id], references: [id], onDelete: Cascade, map: "messages_ibfk_2")
+
+  @@index([room_id], map: "room_id")
+  @@index([user_id], map: "user_id")
+}
+
+model rooms {
+  id         Int         @id @default(autoincrement())
+  name       String      @unique(map: "name") @db.VarChar(255)
+  created_by Int
+  createdAt  DateTime    @db.DateTime(0)
+  updatedAt  DateTime    @db.DateTime(0)
+  messages   messages[]
+  userrooms  userrooms[]
+}
+
+model scores {
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  game_id   Int
+  score     Int
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  users     users    @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "scores_ibfk_1")
+  games     games    @relation(fields: [game_id], references: [id], onDelete: Cascade, map: "scores_ibfk_2")
+
+  @@unique([user_id, game_id], map: "scores_user_id_game_id")
+  @@index([game_id], map: "game_id")
+}
+
+model userrooms {
+  id        Int       @id @default(autoincrement())
+  user_id   Int
+  room_id   Int
+  joined_at DateTime? @db.DateTime(0)
+  createdAt DateTime  @db.DateTime(0)
+  updatedAt DateTime  @db.DateTime(0)
+  users     users     @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "userrooms_ibfk_1")
+  rooms     rooms     @relation(fields: [room_id], references: [id], onDelete: Cascade, map: "userrooms_ibfk_2")
+
+  @@unique([user_id, room_id], map: "UserRooms_room_id_user_id_unique")
+  @@index([room_id], map: "room_id")
+}
+
+model users {
+  id         Int         @id @default(autoincrement())
+  username   String      @unique(map: "username") @db.VarChar(255)
+  password   String      @db.VarChar(255)
+  email      String      @unique(map: "email") @db.VarChar(255)
+  first_name String      @db.VarChar(255)
+  last_name  String      @db.VarChar(255)
+  age        Int
+  address    String      @db.VarChar(255)
+  sexe       users_sexe  @default(male)
+  role       users_role? @default(player)
+  createdAt  DateTime    @db.DateTime(0)
+  updatedAt  DateTime    @db.DateTime(0)
+  messages   messages[]
+  scores     scores[]
+  userrooms  userrooms[]
+}
+
+enum users_sexe {
+  male
+  female
+  other
+}
+
+enum users_role {
+  admin
+  player
+}
