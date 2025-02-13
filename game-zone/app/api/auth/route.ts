@@ -5,19 +5,19 @@ import prisma from "@/app/lib/prisma";
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password } = await request.json();
+    const { username, password } = await request.json();
 
     // Validate input
-    if (!email || !password) {
+    if (!username || !password) {
       return NextResponse.json(
-        { error: "Email and password are required" },
+        { error: "Username and password are required" },
         { status: 400 }
       );
     }
 
-    // Find user
+    // Find user by username instead of email
     const user = await prisma.users.findUnique({
-      where: { email },
+      where: { username },
     });
 
     if (!user) {
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 
     // Generate JWT token
     const token = jwt.sign(
-      { userId: user.id, email: user.email, role: user.role },
+      { userId: user.id, username: user.username, role: user.role },
       process.env.JWT_SECRET || "",
       { expiresIn: "1d" }
     );

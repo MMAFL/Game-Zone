@@ -6,7 +6,7 @@ import { useAuth } from "../context/authContext";
 import Link from "next/link";
 
 export default function LoginForm() {
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const { login } = useAuth();
@@ -20,7 +20,7 @@ export default function LoginForm() {
             const response = await fetch("/api/auth", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ username, password }),
             });
 
             const data = await response.json();
@@ -28,7 +28,7 @@ export default function LoginForm() {
             if (response.ok) {
                 login(data.token, data.user);
                 // Clear form
-                setEmail("");
+                setUsername("");
                 setPassword("");
                 // Redirect to home page after successful login
                 router.push("/");
@@ -47,18 +47,18 @@ export default function LoginForm() {
             )}
             <div className="rounded-md shadow-sm -space-y-px">
                 <div>
-                    <label htmlFor="email" className="sr-only">
-                        Email address
+                    <label htmlFor="username" className="sr-only">
+                        Username
                     </label>
                     <input
-                        id="email"
-                        name="email"
-                        type="email"
+                        id="username"
+                        name="username"
+                        type="text"
                         required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                        placeholder="Email address"
+                        placeholder="Username"
                     />
                 </div>
                 <div>
