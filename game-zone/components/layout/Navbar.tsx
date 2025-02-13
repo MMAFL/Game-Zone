@@ -12,6 +12,14 @@ export default function Navbar() {
   const [user, setUser] = useState<User | null>(null); // If null, no user is logged in
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const scrollToGames = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    event.preventDefault(); // Prevent default link behavior
+
+    const section = document.getElementById("gamesSection");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <nav className={styles.navbar}>
       {/* Logo */}
@@ -22,7 +30,10 @@ export default function Navbar() {
       {/* Navigation Links */}
       <ul className={styles.navLinks}>
         <li><Link href="/">Home</Link></li>
-        <li><Link href="/games">Games</Link></li>
+        <li>
+          {/* Change Games link to call scroll function */}
+          <a href="#gamesSection" onClick={scrollToGames}>Games</a>
+        </li>
         <li><Link href="/about">About</Link></li>
         <li><Link href="/contact">Contact</Link></li>
       </ul>
