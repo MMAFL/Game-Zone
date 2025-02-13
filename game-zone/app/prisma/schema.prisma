@@ -110,3 +110,8 @@ enum users_role {
   admin
   player
 }
+export const config = {
+  api: {
+    bodyParser: true, // Enable built-in body parser
+  },
+};
