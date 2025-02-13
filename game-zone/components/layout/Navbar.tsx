@@ -3,13 +3,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { FaRegCircleUser } from "react-icons/fa6";
 import styles from "@/components/layout/style/Navbar.module.css"; // Correct import
+import { useAuth } from "@/app/context/authContext";
 
 interface User {
-  role: "player" | "admin" | null; 
+  role: "player" | "admin" | null;
 }
 
 export default function Navbar() {
-  const [user, setUser] = useState<User | null>(null); // If null, no user is logged in
+  const { user, logout, isAuthenticated } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const scrollToGames = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -48,14 +49,23 @@ export default function Navbar() {
 
         {dropdownOpen && (
           <div className={styles.dropdown}>
-            {!user && <Link href="/login">Log In</Link>}
-            {user?.role === "player" && (
-              <button onClick={() => setUser(null)}>Log Out</button>
-            )}
-            {user?.role === "admin" && (
+            {!isAuthenticated ? (
               <>
-                <button onClick={() => setUser(null)}>Log Out</button>
-                <Link href="/admin/add-game">Add a Game</Link>
+                <Link href="/login">Log In</Link>
+                <Link href="/register">Register</Link>
+              </>
+            ) : (
+              <>
+                <span>Welcome, {user?.username}!</span>
+                {user?.role === "player" && (
+                  <button onClick={logout}>Log Out</button>
+                )}
+                {user?.role === "admin" && (
+                  <>
+                    <button onClick={logout}>Log Out</button>
+                    <Link href="/admin/add-game">Add a Game</Link>
+                  </>
+                )}
               </>
             )}
           </div>
