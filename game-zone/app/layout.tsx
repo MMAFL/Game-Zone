@@ -8,7 +8,7 @@ import {
 } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import { AuthProvider } from "./context/authContext";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -31,6 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
+      <AuthProvider>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -46,6 +47,7 @@ export default function RootLayout({
           {children}
         </body>
       </html>
+      </AuthProvider>
     </ClerkProvider>
   );
 }
