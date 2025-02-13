@@ -5,6 +5,23 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../context/authContext";
 import Link from "next/link";
 
+// Add password validation function
+const validatePassword = (password: string): { isValid: boolean; error: string } => {
+    if (password.length < 8) {
+        return { isValid: false, error: "Password must be at least 8 characters long" };
+    }
+    if (!/[A-Z]/.test(password)) {
+        return { isValid: false, error: "Password must contain at least one uppercase letter" };
+    }
+    if (!/[a-z]/.test(password)) {
+        return { isValid: false, error: "Password must contain at least one lowercase letter" };
+    }
+    if (!/[0-9]/.test(password)) {
+        return { isValid: false, error: "Password must contain at least one number" };
+    }
+    return { isValid: true, error: "" };
+};
+
 export default function RegisterForm() {
     const [formData, setFormData] = useState({
         username: "",
@@ -32,6 +49,13 @@ export default function RegisterForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+
+        // Password validation
+        const passwordValidation = validatePassword(formData.password);
+        if (!passwordValidation.isValid) {
+            setError(passwordValidation.error);
+            return;
+        }
 
         // Validate passwords match
         if (formData.password !== formData.confirmPassword) {
@@ -175,6 +199,9 @@ export default function RegisterForm() {
                         onChange={handleChange}
                         className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                     />
+                    <p className="mt-1 text-sm text-gray-500">
+                        Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number
+                    </p>
                 </div>
 
                 <div>
