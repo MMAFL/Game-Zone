@@ -5,7 +5,7 @@ import styles from "@/components/layout/style/Hero.module.css"; // Import CSS
 
 const images = [
   "/images/1.jpg",
-  "/images/2.jpg",
+  "/images/2.png",
   "/images/3.jpg",
   "/images/4.jpg",
 
@@ -19,7 +19,7 @@ export default function Hero() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 1000);
+    }, 1500);
 
     return () => clearInterval(interval); // Cleanup interval
   }, []);
