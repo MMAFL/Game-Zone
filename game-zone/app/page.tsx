@@ -1,5 +1,6 @@
-// import Image from "next/image";
+
 "use client"
+// import Image from "next/image";
 import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/hero";
