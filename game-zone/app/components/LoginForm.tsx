@@ -4,11 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/authContext";
 import Link from "next/link";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function LoginForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const { login } = useAuth();
     const router = useRouter();
 
@@ -61,20 +63,31 @@ export default function LoginForm() {
                         placeholder="Username"
                     />
                 </div>
-                <div>
+                <div className="relative">
                     <label htmlFor="password" className="sr-only">
                         Password
                     </label>
                     <input
                         id="password"
                         name="password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                         placeholder="Password"
                     />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    >
+                        {showPassword ? (
+                            <FaEyeSlash className="h-5 w-5 text-gray-400" />
+                        ) : (
+                            <FaEye className="h-5 w-5 text-gray-400" />
+                        )}
+                    </button>
                 </div>
             </div>
 
