@@ -1,3 +1,5 @@
+// GameList.tsx
+"use client";
 import React, { useEffect, useState } from "react";
 import GameCard from "./GameCard";
 import styles from "../style/GameList.module.css";
@@ -23,12 +25,9 @@ const GameList: React.FC<GameListProps> = ({ searchQuery, categoryId }) => {
   useEffect(() => {
     const fetchGames = async () => {
       setLoading(true);
-      
-      // Clear message only if a search is performed
       if (searchQuery || categoryId !== null) {
         setMessage("");
       }
-
       const url = new URL(`/api/games`, window.location.origin);
       if (searchQuery) url.searchParams.append("search", searchQuery);
       if (categoryId) url.searchParams.append("category", categoryId.toString());
@@ -37,8 +36,6 @@ const GameList: React.FC<GameListProps> = ({ searchQuery, categoryId }) => {
         const res = await fetch(url.toString());
         const data = await res.json();
         setGames(data);
-
-        // Display message only if searchQuery or category is selected
         if ((searchQuery || categoryId !== null) && data.length === 0) {
           setMessage("No games found. Try a different search or a category.");
         } else if (data.length > 0) {
@@ -50,7 +47,6 @@ const GameList: React.FC<GameListProps> = ({ searchQuery, categoryId }) => {
         setLoading(false);
       }
     };
-
     fetchGames();
   }, [searchQuery, categoryId]);
 
@@ -58,11 +54,8 @@ const GameList: React.FC<GameListProps> = ({ searchQuery, categoryId }) => {
     <div id="gamesSection" className={styles.AllgameList}>
       {loading && <p className="searchMessage">Loading games...</p>}
       {!loading && message && searchQuery && (
-        <p style={{ color: "white" }} className="searchMessage">
-          {message}
-        </p>
+        <p style={{ color: "white" }} className="searchMessage">{message}</p>
       )}
-
       <div className={styles.gameList}>
         {games.map((game) => (
           <GameCard
