@@ -47,6 +47,7 @@ export default function RegisterForm() {
         }
 
         try {
+            // First, register the user
             const response = await fetch("/api/user", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -61,20 +62,28 @@ export default function RegisterForm() {
 
             if (response.ok) {
                 // Auto-login after successful registration
-                const loginResponse = await fetch("/api/auth", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        email: formData.email,
-                        password: formData.password,
-                    }),
-                });
+                try {
+                    const loginResponse = await fetch("/api/auth", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            username: formData.username,  // Make sure this matches
+                            password: formData.password,
+                        }),
+                    });
 
-                const loginData = await loginResponse.json();
-
-                if (loginResponse.ok) {
-                    login(loginData.token, loginData.user);
-                    router.push("/"); // Redirect to home page
+                    if (loginResponse.ok) {
+                        const loginData = await loginResponse.json();
+                        login(loginData.token, loginData.user);
+                        router.push("/"); // Redirect to home page
+                    } else {
+                        const errorData = await loginResponse.json();
+                        console.error("Login error:", errorData);
+                        setError("Registration successful but auto-login failed. Please try logging in manually.");
+                    }
+                } catch (loginErr) {
+                    console.error("Auto-login error:", loginErr);
+                    setError("Registration successful but auto-login failed. Please try logging in manually.");
                 }
             } else {
                 setError(data.error || "Registration failed");
