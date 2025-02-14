@@ -34,6 +34,7 @@ interface User {
   address: string;
   sexe: string;
   role: string;
+  score: number;
   createdAt: string;
   avatar?: string;
 }
@@ -48,6 +49,7 @@ const ProfilePage: React.FC = () => {
     last_name: "",
     age: "",
     address: "",
+    score: "",
   });
   const [passwords, setPasswords] = useState({
     currentPassword: "",
@@ -85,6 +87,7 @@ const ProfilePage: React.FC = () => {
           last_name: data.last_name || "",
           age: data.age ? String(data.age) : "",
           address: data.address || "",
+          score: data.score || "",
         });
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -142,7 +145,7 @@ const ProfilePage: React.FC = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         await fetch("/api/users", { method: "DELETE" });
-        router.push("/login");
+        router.push("/");
       }
     });
   };
@@ -196,7 +199,8 @@ const ProfilePage: React.FC = () => {
             <p><strong>Email:</strong> {user.email}</p>
             <p><strong>Address:</strong> {user.address}</p>
             <p><strong>Role:</strong> {user.role}</p>
-            <p><strong>Score:</strong> {user.age}</p>
+            <p><strong>age:</strong> {user.age}</p>
+            <p><strong>Score:</strong> {user.score}</p>
           </div>
 
           <div className={styles.buttonContainer}>
