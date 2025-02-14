@@ -32,8 +32,12 @@ export default function LoginForm() {
                 // Clear form
                 setUsername("");
                 setPassword("");
-                // Redirect to home page after successful login
-                router.push("/");
+                // Redirect based on user role
+                if (data.user.role === 'admin') {
+                    router.push("/dashboard");
+                } else {
+                    router.push("/");
+                }
             } else {
                 setError(data.error || "Login failed");
             }
