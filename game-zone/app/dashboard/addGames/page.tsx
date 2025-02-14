@@ -1,6 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Sidebar from '@/app/components/Sidebar';
+import AdminNavbar from '@/app/components/AdminNavbar';
 
 export default function AddGames() {
   const [gameFile, setGameFile] = useState<File | null>(null);
@@ -118,7 +120,10 @@ export default function AddGames() {
   };
 
   return (
-    <div className="p-8 max-w-2xl mx-auto">
+    <div>
+      <AdminNavbar />
+    <div className="p-8 max-w-2xl mx-auto mt-20">
+      <Sidebar />
       <h1 className="text-3xl font-bold text-center mb-8">Add New Game</h1>
       
       <div className="space-y-6">
@@ -208,6 +213,7 @@ export default function AddGames() {
             Loading... Please wait.
           </p>
         )}
+      </div>
       </div>
     </div>
   );
