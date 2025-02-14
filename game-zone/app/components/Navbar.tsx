@@ -56,16 +56,19 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <span>Welcome, {user?.username}!</span>
+                {/* <span>Welcome, {user?.username}!</span> */}
                 {user?.role === "player" && (
+                  <>
                   <button onClick={logout}>Log Out</button>
+                  <Link href="/profile">profile</Link>
+                  </>
                 )}
                 {user?.role === "admin" && (
                   <>
                     <button onClick={logout}>Log Out</button>
                     <Link href="/dashboard">dashboard</Link>
                     <Link href="/dashboard/addGames">Add a Game</Link>
-
+                    <Link href="/profile">profile</Link>
                   </>
                 )}
               </>
