@@ -1,75 +1,109 @@
 .profileContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
-  
-  .avatarContainer {
-    margin-bottom: 15px;
-  }
-  
-  .avatar {
-    border-radius: 50%;
-    border: 3px solid #ccc;
-  }
-  
-  .username {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .userInfo {
-    font-size: 16px;
-    margin: 5px 0;
-  }
-  
-  .avatarSelection {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .avatarOption {
-    cursor: pointer;
-    border: 2px solid transparent;
-  }
-  
-  .selectedAvatar {
-    border: 2px solid blue;
-  }
-  
-  .fileInput {
-    margin-top: 10px;
-  }
-  
-  .button {
-    padding: 10px 15px;
-    margin-top: 10px;
-    border: none;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-  }
-  
-  .button:hover {
-    background-color: #0056b3;
-  }
-  
-  .deleteButton {
-    background-color: #d33;
-  }
-  
-  .deleteButton:hover {
-    background-color: #a00;
-  }
-  
-  .passwordButton {
-    background-color: #ffa500;
-  }
-  
-  .passwordButton:hover {
-    background-color: #cc8400;
-  }
-  
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.avatarContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #007bff;
+  object-fit: cover;
+}
+
+.avatarSelection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.avatarOption {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.3s;
+  object-fit: cover;
+}
+
+.selectedAvatar {
+  border-color: #007bff;
+}
+
+.button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+}
+
+.deleteButton:hover {
+  background-color: #a71d2a;
+}
+
+/* Align buttons in one row */
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+label {
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.passwordContainer {
+  position: relative;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}

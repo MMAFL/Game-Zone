@@ -4,13 +4,14 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-import styles from "@/app/style/Profile.module.css";
+import styles from "../style/Profile.module.css";
 
 const avatars = [
-  "/avatars/avatar1.png",
-  "/avatars/avatar2.png",
-  "/avatars/avatar3.png",
-  "/avatars/avatar4.png",
+  "/images/p1.avif",
+  "/images/p2.avif",
+  "/images/p3.avif",
+  "/images/p4.webp",
+  "/images/p5.",
 ];
 
 interface User {
@@ -38,7 +39,11 @@ const ProfilePage: React.FC = () => {
     age: "",
     address: "",
   });
-  const [passwords, setPasswords] = useState({ newPassword: "", confirmPassword: "" });
+  const [passwords, setPasswords] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
   const [passwordVisible, setPasswordVisible] = useState(false);
   const router = useRouter();
 
@@ -94,6 +99,10 @@ const ProfilePage: React.FC = () => {
     }
     if (passwords.newPassword.length < 6) {
       Swal.fire("Error", "Password is too weak!", "error");
+      return;
+    }
+    if (passwords.newPassword === passwords.currentPassword) {
+      Swal.fire("Error", "New password cannot be the same as the old password!", "error");
       return;
     }
 
@@ -153,13 +162,32 @@ const ProfilePage: React.FC = () => {
 
       {view === "update" && (
         <>
+          <h2>Update Profile</h2>
           <label>Username:</label>
           <input type="text" value={formData.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} />
           <label>First Name:</label>
           <input type="text" value={formData.first_name} onChange={(e) => setFormData({ ...formData, first_name: e.target.value })} />
           <label>Last Name:</label>
           <input type="text" value={formData.last_name} onChange={(e) => setFormData({ ...formData, last_name: e.target.value })} />
+          <label>Age:</label>
+          <input type="number" value={formData.age} onChange={(e) => setFormData({ ...formData, age: e.target.value })} />
+          <label>Address:</label>
+          <input type="text" value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
           <button onClick={handleUpdateProfile}>Save</button>
+          <button onClick={() => setView("profile")}>Cancel</button>
+        </>
+      )}
+
+      {view === "changePassword" && (
+        <>
+          <h2>Change Password</h2>
+          <label>Current Password:</label>
+          <input type="password" value={passwords.currentPassword} onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })} />
+          <label>New Password:</label>
+          <input type="password" value={passwords.newPassword} onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })} />
+          <label>Confirm New Password:</label>
+          <input type="password" value={passwords.confirmPassword} onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })} />
+          <button onClick={handleChangePassword}>Update Password</button>
           <button onClick={() => setView("profile")}>Cancel</button>
         </>
       )}
