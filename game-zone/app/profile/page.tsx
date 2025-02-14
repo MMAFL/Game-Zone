@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-import styles from '@/app/style/Profile.module.css';
+import styles from "@/app/style/Profile.module.css";
 
 const avatars = [
   "/avatars/avatar1.png",
@@ -14,28 +14,61 @@ const avatars = [
 ];
 
 interface User {
+  id: number;
   username: string;
+  email: string;
   first_name: string;
   last_name: string;
+  age: number;
+  address: string;
+  sexe: string;
+  role: string;
+  createdAt: string;
   avatar?: string;
 }
 
 const ProfilePage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [selectedAvatar, setSelectedAvatar] = useState(avatars[0]);
+  const [view, setView] = useState("profile");
+  const [formData, setFormData] = useState({
+    username: "",
+    first_name: "",
+    last_name: "",
+    age: "",
+    address: "",
+  });
+  const [passwords, setPasswords] = useState({ newPassword: "", confirmPassword: "" });
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("/api/user");
-        const data = await res.json();
-        if (data) {
-          setUser(data);
-          setSelectedAvatar(data.avatar || avatars[0]);
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found, user not authenticated.");
+          return;
         }
+
+        const res = await fetch("/api/users", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch user");
+
+        const data = await res.json();
+        setUser(data);
+        setSelectedAvatar(data.avatar || avatars[0]);
+        setFormData({
+          username: data.username || "",
+          first_name: data.first_name || "",
+          last_name: data.last_name || "",
+          age: data.age ? String(data.age) : "",
+          address: data.address || "",
+        });
       } catch (error) {
-        console.error("Failed to fetch user:", error);
+        console.error("Error fetching user:", error);
       }
     };
     fetchUser();
@@ -45,27 +78,33 @@ const ProfilePage: React.FC = () => {
     setSelectedAvatar(avatar);
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handleUpdateProfile = async () => {
+    await fetch("/api/users", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...formData, avatar: selectedAvatar }),
+    });
+    setView("profile");
+  };
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "your_upload_preset");
-
-    try {
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/doxjp0kvo/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      const data = await response.json();
-      setSelectedAvatar(data.secure_url);
-    } catch (error) {
-      console.error("Error uploading image", error);
+  const handleChangePassword = async () => {
+    if (passwords.newPassword !== passwords.confirmPassword) {
+      Swal.fire("Error", "Passwords do not match!", "error");
+      return;
     }
+    if (passwords.newPassword.length < 6) {
+      Swal.fire("Error", "Password is too weak!", "error");
+      return;
+    }
+
+    await fetch("/api/users/password", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ newPassword: passwords.newPassword }),
+    });
+
+    Swal.fire("Success", "Password updated successfully!", "success");
+    setView("profile");
   };
 
   const handleDeleteAccount = async () => {
@@ -79,63 +118,50 @@ const ProfilePage: React.FC = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await fetch("/api/user", { method: "DELETE" });
+        await fetch("/api/users", { method: "DELETE" });
         router.push("/login");
       }
     });
   };
 
-  const handleUpdateProfile = async () => {
-    await fetch("/api/user", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ avatar: selectedAvatar }),
-    });
-  };
-
   return (
     <div className={styles.profileContainer}>
-      {user ? (
+      {view === "profile" && user && (
         <>
           <div className={styles.avatarContainer}>
-            <Image
-              src={selectedAvatar}
-              alt="Avatar"
-              width={100}
-              height={100}
-              className={styles.avatar}
-            />
+            <Image src={selectedAvatar} alt="Avatar" width={100} height={100} className={styles.avatar} />
           </div>
           <h2 className={styles.username}>{user.username}</h2>
-          <p className={styles.fullName}>{user.first_name} {user.last_name}</p>
-          
           <div className={styles.avatarSelection}>
             {avatars.map((avatar, index) => (
-              <Image
-                key={index}
-                src={avatar}
-                alt="Avatar Option"
-                width={50}
-                height={50}
-                className={selectedAvatar === avatar ? styles.selectedAvatar : styles.avatarOption}
-                onClick={() => handleAvatarChange(avatar)}
-              />
+              <Image key={index} src={avatar} alt="Avatar Option" width={50} height={50} className={selectedAvatar === avatar ? styles.selectedAvatar : styles.avatarOption} onClick={() => handleAvatarChange(avatar)} />
             ))}
-            <input type="file" onChange={handleImageUpload} className={styles.fileInput} />
+            <button onClick={handleUpdateProfile} className={styles.button}>Change Avatar</button>
           </div>
-
-          <button onClick={handleUpdateProfile} className={`${styles.button} ${styles.updateButton}`}>
-            Update Profile
-          </button>
-          <button onClick={handleDeleteAccount} className={`${styles.button} ${styles.deleteButton}`}>
-            Delete Account
-          </button>
-          <button onClick={() => router.push("/change-password")} className={`${styles.button} ${styles.passwordButton}`}>
-            Change Password
-          </button>
+          <p><strong>Email:</strong> {user.email}</p>
+          <p><strong>Name:</strong> {user.first_name} {user.last_name}</p>
+          <p><strong>Age:</strong> {user.age}</p>
+          <p><strong>Address:</strong> {user.address}</p>
+          <p><strong>Sex:</strong> {user.sexe}</p>
+          <p><strong>Role:</strong> {user.role}</p>
+          <p><strong>Account Created:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
+          <button onClick={() => setView("update")} className={styles.button}>Update Profile</button>
+          <button onClick={() => setView("changePassword")} className={styles.button}>Change Password</button>
+          <button onClick={handleDeleteAccount} className={`${styles.button} ${styles.deleteButton}`}>Delete Account</button>
         </>
-      ) : (
-        <p>Loading profile...</p>
+      )}
+
+      {view === "update" && (
+        <>
+          <label>Username:</label>
+          <input type="text" value={formData.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} />
+          <label>First Name:</label>
+          <input type="text" value={formData.first_name} onChange={(e) => setFormData({ ...formData, first_name: e.target.value })} />
+          <label>Last Name:</label>
+          <input type="text" value={formData.last_name} onChange={(e) => setFormData({ ...formData, last_name: e.target.value })} />
+          <button onClick={handleUpdateProfile}>Save</button>
+          <button onClick={() => setView("profile")}>Cancel</button>
+        </>
       )}
     </div>
   );
