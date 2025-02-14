@@ -1,7 +1,7 @@
 "use client"; // Required for useState and useEffect
 
 import { useState, useEffect } from "react";
-import styles from "@/components/layout/style/Hero.module.css"; // Import CSS
+import styles from "../style/Hero.module.css"; // Import CSS
 
 const images = [
   "/images/3.jpg",
@@ -16,7 +16,7 @@ export default function Hero() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 2500);
+    }, 3500);
 
     return () => clearInterval(interval); // Cleanup interval
   }, []);

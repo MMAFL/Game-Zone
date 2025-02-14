@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
-import styles from "./style/Footer.module.css";
+import styles from "../style/Footer.module.css";
 
 const Footer: React.FC = () => {
     const scrollToGames = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {

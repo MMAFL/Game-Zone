@@ -69,4 +69,23 @@
       gap: 10px;
     }
   }
+  .searchMessage {
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50px; /* Ensures it takes up space */
+  }
   
+  .AllgameList {
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers content horizontally */
+    justify-content: center; /* Centers content vertically */
+    /* min-height: 100vh; *//*Ensures the full height is used */
+    padding: 20px;
+  }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import styles from './style/GameCard.module.css';
+import styles from "../style/GameCard.module.css";
 
 
 interface GameCardProps {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
-import styles from "@/components/layout/style/SearchAndCategory.module.css";
+import styles from "../style/SearchAndCategory.module.css";
 
 interface Category {
   id: number;
@@ -20,6 +20,7 @@ export default function SearchAndCategory({
 }: SearchAndCategoryProps) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("All Categories");
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -35,9 +36,10 @@ export default function SearchAndCategory({
     fetchCategories();
   }, []);
 
-  const handleCategorySelect = (categoryId: number, categoryName: string) => {
+  const handleCategorySelect = (categoryId: number | null, categoryName: string) => {
     setSelectedCategory(categoryName);
     setCategoryId(categoryId);
+    setShowDropdown(false);
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,26 +49,36 @@ export default function SearchAndCategory({
   return (
     <div className={styles.container}>
       <div className={styles.searchContainer}>
-        {/* Category dropdown */}
+        {/* Category Dropdown */}
         <div className={styles.dropdownContainer}>
-          <button className={styles.dropdownButton}>Select Category</button>
-          <div className={styles.dropdownContent}>
-            <button onClick={() => handleCategorySelect(null, "All Categories")} className={styles.dropdownItem}>
-              All Categories
-            </button>
-            {categories.map((category) => (
+          <button
+            className={styles.dropdownButton}
+            onClick={() => setShowDropdown(!showDropdown)}
+          >
+            {selectedCategory}
+          </button>
+          {showDropdown && (
+            <div className={styles.dropdownContent}>
               <button
-                key={category.id}
-                onClick={() => handleCategorySelect(category.id, category.name)}
+                onClick={() => handleCategorySelect(null, "All Categories")}
                 className={styles.dropdownItem}
               >
-                {category.name}
+                All Categories
               </button>
-            ))}
-          </div>
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => handleCategorySelect(category.id, category.name)}
+                  className={styles.dropdownItem}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Search bar */}
+        {/* Search Bar */}
         <div className={styles.searchBox}>
           <input
             type="text"
@@ -77,9 +89,6 @@ export default function SearchAndCategory({
           <FaSearch className={styles.searchIcon} />
         </div>
       </div>
-
-      {/* Display selected category */}
-      <p className={styles.categoryMessage}>Selected Category: {selectedCategory}</p>
     </div>
   );
 }

@@ -64,9 +64,9 @@
   /* Dropdown Menu */
   .dropdown {
     position: absolute;
-    width: 80px;
+    width: 100px;
     right: 0;
-    top: 30px;
+    top: 20px;
     background-color: black;
     border: 1px solid purple;
     padding: 10px;
