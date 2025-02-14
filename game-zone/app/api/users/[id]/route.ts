@@ -8,7 +8,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    await prisma.user.delete({
+    await prisma.users.delete({
       where: { id: parseInt(params.id) },
     });
     return NextResponse.json({ message: 'User deleted successfully' });
