@@ -1,6 +1,9 @@
-import { NextResponse } from "next/server";
-import prisma from "@/app/lib/prisma"; // Ensure you have a Prisma client setup
+import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
 
+const prisma = new PrismaClient();
+
+// GET all categories
 export async function GET() {
   try {
     const categories = await prisma.categories.findMany();

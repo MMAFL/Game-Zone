@@ -66,38 +66,55 @@ export default function AddGames() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('gameFile', gameFile);
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('thumbnail', thumbnail);
-    formData.append('category', category);
+    // Convert the game file to base64
+    const reader = new FileReader();
+    reader.readAsDataURL(gameFile);
+    reader.onload = async () => {
+      const base64GameFile = reader.result?.toString().split(',')[1]; // Remove the data URL prefix
 
-    setLoading(true);
+      const payload = {
+        title,
+        description,
+        thumbnail,
+        category,
+        gameFile: base64GameFile,
+      };
 
-    try {
-      const response = await fetch('/api/games', {
-        method: 'POST',
-        body: formData,
-      });
+      setLoading(true);
 
-      if (!response.ok) {
-        throw new Error('Failed to upload game');
+      try {
+        const response = await fetch('/api/games', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to upload game');
+        }
+
+        const data = await response.json();
+        alert("Game uploaded successfully!");
+        // Clear form
+        setTitle('');
+        setDescription('');
+        setThumbnail('');
+        setCategory('');
+        setGameFile(null);
+      } catch (error) {
+        console.error("Error uploading game:", error);
+        alert("Failed to upload game.");
+      } finally {
+        setLoading(false);
       }
+    };
 
-      alert("Game uploaded successfully!");
-      // Clear form
-      setTitle('');
-      setDescription('');
-      setThumbnail('');
-      setCategory('');
-      setGameFile(null);
-    } catch (error) {
-      console.error("Error uploading game:", error);
-      alert("Failed to upload game.");
-    } finally {
-      setLoading(false);
-    }
+    reader.onerror = (error) => {
+      console.error("Error reading file:", error);
+      alert("Failed to read game file.");
+    };
   };
 
   return (
