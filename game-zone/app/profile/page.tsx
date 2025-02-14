@@ -4,14 +4,24 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-import styles from "../style/Profile.module.css";
+import { Eye, EyeOff } from "lucide-react";
+import styles from '../style/Profile.module.css';
 
 const avatars = [
-  "/images/p1.avif",
   "/images/p2.avif",
   "/images/p3.avif",
   "/images/p4.webp",
-  "/images/p5.",
+  "/images/p5.jpeg",
+  "/images/p6.webp",
+  "/images/p7.avif",
+  "/images/p8.avif",
+  "/images/p9.avif",
+  "/images/p10.avif",
+  "/images/p11.jpg",
+  "/images/p12.jpeg",
+  "/images/p12.jpg",
+ 
+  
 ];
 
 interface User {
@@ -44,7 +54,11 @@ const ProfilePage: React.FC = () => {
     newPassword: "",
     confirmPassword: "",
   });
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [showPasswords, setShowPasswords] = useState({
+    current: false,
+    new: false,
+    confirm: false,
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -122,8 +136,8 @@ const ProfilePage: React.FC = () => {
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#9333ea",
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
@@ -133,64 +147,181 @@ const ProfilePage: React.FC = () => {
     });
   };
 
+  if (!user) {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner}></div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.profileContainer}>
+      
+
       {view === "profile" && user && (
         <>
-          <div className={styles.avatarContainer}>
-            <Image src={selectedAvatar} alt="Avatar" width={100} height={100} className={styles.avatar} />
+          <div className={styles.profileHeader}>
+            <div className={styles.avatarContainer}>
+              <Image 
+                src={selectedAvatar} 
+                alt="Avatar" 
+                width={120} 
+                height={120} 
+                className={styles.avatar}
+              />
+            </div>
+            <div className={styles.userHeaderInfo}>
+              <h2 className={styles.username}>{user.username}</h2>
+            </div>
           </div>
-          <h2 className={styles.username}>{user.username}</h2>
+
           <div className={styles.avatarSelection}>
             {avatars.map((avatar, index) => (
-              <Image key={index} src={avatar} alt="Avatar Option" width={50} height={50} className={selectedAvatar === avatar ? styles.selectedAvatar : styles.avatarOption} onClick={() => handleAvatarChange(avatar)} />
+              <Image
+                key={index}
+                src={avatar}
+                alt="Avatar Option"
+                width={50}
+                height={50}
+                className={`${styles.avatarOption} ${selectedAvatar === avatar ? styles.selectedAvatar : ''}`}
+                onClick={() => handleAvatarChange(avatar)}
+              />
             ))}
-            <button onClick={handleUpdateProfile} className={styles.button}>Change Avatar</button>
           </div>
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Name:</strong> {user.first_name} {user.last_name}</p>
-          <p><strong>Age:</strong> {user.age}</p>
-          <p><strong>Address:</strong> {user.address}</p>
-          <p><strong>Sex:</strong> {user.sexe}</p>
-          <p><strong>Role:</strong> {user.role}</p>
-          <p><strong>Account Created:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
-          <button onClick={() => setView("update")} className={styles.button}>Update Profile</button>
-          <button onClick={() => setView("changePassword")} className={styles.button}>Change Password</button>
-          <button onClick={handleDeleteAccount} className={`${styles.button} ${styles.deleteButton}`}>Delete Account</button>
+
+          <div className={styles.userInfo}>
+            <p><strong>First Name:</strong> {user.first_name}</p>
+            <p><strong>Last Name:</strong> {user.last_name}</p>
+            <p><strong>Email:</strong> {user.email}</p>
+            <p><strong>Address:</strong> {user.address}</p>
+            <p><strong>Role:</strong> {user.role}</p>
+            <p><strong>Score:</strong> {user.age}</p>
+          </div>
+
+          <div className={styles.buttonContainer}>
+            <button onClick={() => setView("update")} className={styles.button}>Update Profile</button>
+            <button onClick={() => setView("changePassword")} className={styles.button}>Change Password</button>
+            <button onClick={handleDeleteAccount} className={`${styles.button} ${styles.deleteButton}`}>Delete Account</button>
+          </div>
         </>
       )}
 
       {view === "update" && (
-        <>
+        <div className={styles.formContainer}>
           <h2>Update Profile</h2>
-          <label>Username:</label>
-          <input type="text" value={formData.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} />
-          <label>First Name:</label>
-          <input type="text" value={formData.first_name} onChange={(e) => setFormData({ ...formData, first_name: e.target.value })} />
-          <label>Last Name:</label>
-          <input type="text" value={formData.last_name} onChange={(e) => setFormData({ ...formData, last_name: e.target.value })} />
-          <label>Age:</label>
-          <input type="number" value={formData.age} onChange={(e) => setFormData({ ...formData, age: e.target.value })} />
-          <label>Address:</label>
-          <input type="text" value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
-          <button onClick={handleUpdateProfile}>Save</button>
-          <button onClick={() => setView("profile")}>Cancel</button>
-        </>
+          <div className={styles.formGroup}>
+            <label>Username:</label>
+            <input
+              type="text"
+              value={formData.username}
+              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label>First Name:</label>
+            <input
+              type="text"
+              value={formData.first_name}
+              onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Last Name:</label>
+            <input
+              type="text"
+              value={formData.last_name}
+              onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Score:</label>
+            <input
+              type="number"
+              value={formData.age}
+              onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Address:</label>
+            <input
+              type="text"
+              value={formData.address}
+              onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+            />
+          </div>
+          <div className={styles.buttonContainer}>
+            <button onClick={handleUpdateProfile} className={styles.button}>Save</button>
+            <button onClick={() => setView("profile")} className={styles.button}>Cancel</button>
+          </div>
+        </div>
       )}
 
       {view === "changePassword" && (
-        <>
+        <div className={styles.formContainer}>
           <h2>Change Password</h2>
-          <label>Current Password:</label>
-          <input type="password" value={passwords.currentPassword} onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })} />
-          <label>New Password:</label>
-          <input type="password" value={passwords.newPassword} onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })} />
-          <label>Confirm New Password:</label>
-          <input type="password" value={passwords.confirmPassword} onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })} />
-          <button onClick={handleChangePassword}>Update Password</button>
-          <button onClick={() => setView("profile")}>Cancel</button>
-        </>
+          <div className={styles.formGroup}>
+            <label>Current Password:</label>
+            <div className={styles.passwordInputContainer}>
+              <input
+                type={showPasswords.current ? "text" : "password"}
+                value={passwords.currentPassword}
+                onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })}
+              />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                onClick={() => setShowPasswords({ ...showPasswords, current: !showPasswords.current })}
+              >
+                {showPasswords.current ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+          </div>
+          <div className={styles.formGroup}>
+            <label>New Password:</label>
+            <div className={styles.passwordInputContainer}>
+              <input
+                type={showPasswords.new ? "text" : "password"}
+                value={passwords.newPassword}
+                onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
+              />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                onClick={() => setShowPasswords({ ...showPasswords, new: !showPasswords.new })}
+              >
+                {showPasswords.new ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+          </div>
+          <div className={styles.formGroup}>
+            <label>Confirm New Password:</label>
+            <div className={styles.passwordInputContainer}>
+              <input
+                type={showPasswords.confirm ? "text" : "password"}
+                value={passwords.confirmPassword}
+                onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })}
+              />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                onClick={() => setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })}
+              >
+                {showPasswords.confirm ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+          </div>
+          <div className={styles.buttonContainer}>
+            <button onClick={handleChangePassword} className={styles.button}>Update Password</button>
+            <button onClick={() => setView("profile")} className={styles.button}>Cancel</button>
+          </div>
+        </div>
       )}
+      <div className={styles.header}>
+        <button onClick={() => router.push("/")} className={styles.returnButton}>
+          Return to Home
+        </button>
+      </div>
     </div>
   );
 };
