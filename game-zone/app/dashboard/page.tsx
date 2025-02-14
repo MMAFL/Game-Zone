@@ -119,10 +119,10 @@ export default function Dashboard() {
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id}>
-                    <td className="border p-2">{user.first_name + " " + user.last_name}</td>
-                    <td className="border p-2">{user.email}</td>
-                    <td className="border p-2">{new Date(user.createdAt).toLocaleDateString()}</td>
-                    <td className="border p-2">
+                    <td className="border p-1">{user.first_name + " " + user.last_name}</td>
+                    <td className="border p-1">{user.email}</td>
+                    <td className="border p-1">{new Date(user.createdAt).toLocaleDateString()}</td>
+                    <td className="border p-1">
                       <button
                         onClick={() => deleteUser(user.id)}
                         className="bg-violet-500 text-white px-3 py-1 rounded hover:bg-violet-600 mr-2"
@@ -130,7 +130,7 @@ export default function Dashboard() {
                         Delete
                       </button>
                       <button
-                        onClick={() => window.location.href = `/users/edit/${user.id}`}
+                        onClick={() => window.location.href = `/dashboard/users/edit/${user.id}`}
                         className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
                       >
                         Edit
