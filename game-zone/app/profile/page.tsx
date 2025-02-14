@@ -1,9 +1,10 @@
 'use client';
+
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-// import styles from "../styles/Profile.module.css";
+import styles from '@/app/style/Profile.module.css';
 
 const avatars = [
   "/avatars/avatar1.png",
@@ -12,28 +13,40 @@ const avatars = [
   "/avatars/avatar4.png",
 ];
 
-const ProfilePage = () => {
-  const [user, setUser] = useState(null);
-  const [selectedAvatar, setSelectedAvatar] = useState("/avatars/avatar1.png");
-  const [imageFile, setImageFile] = useState(null);
+interface User {
+  username: string;
+  first_name: string;
+  last_name: string;
+  avatar?: string;
+}
+
+const ProfilePage: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [selectedAvatar, setSelectedAvatar] = useState(avatars[0]);
   const router = useRouter();
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await fetch("/api/user");
-      const data = await res.json();
-      setUser(data);
-      setSelectedAvatar(data.avatar || "/avatars/avatar1.png");
+      try {
+        const res = await fetch("/api/user");
+        const data = await res.json();
+        if (data) {
+          setUser(data);
+          setSelectedAvatar(data.avatar || avatars[0]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user:", error);
+      }
     };
     fetchUser();
   }, []);
 
-  const handleAvatarChange = (avatar) => {
+  const handleAvatarChange = (avatar: string) => {
     setSelectedAvatar(avatar);
   };
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (!file) return;
 
     const formData = new FormData();
@@ -82,7 +95,7 @@ const ProfilePage = () => {
 
   return (
     <div className={styles.profileContainer}>
-      {user && (
+      {user ? (
         <>
           <div className={styles.avatarContainer}>
             <Image
@@ -93,8 +106,9 @@ const ProfilePage = () => {
               className={styles.avatar}
             />
           </div>
-          <h2>{user.username}</h2>
-          <p>{user.first_name} {user.last_name}</p>
+          <h2 className={styles.username}>{user.username}</h2>
+          <p className={styles.fullName}>{user.first_name} {user.last_name}</p>
+          
           <div className={styles.avatarSelection}>
             {avatars.map((avatar, index) => (
               <Image
@@ -103,24 +117,25 @@ const ProfilePage = () => {
                 alt="Avatar Option"
                 width={50}
                 height={50}
-                className={
-                  selectedAvatar === avatar ? styles.selectedAvatar : styles.avatarOption
-                }
+                className={selectedAvatar === avatar ? styles.selectedAvatar : styles.avatarOption}
                 onClick={() => handleAvatarChange(avatar)}
               />
             ))}
-            <input type="file" onChange={handleImageUpload} />
+            <input type="file" onChange={handleImageUpload} className={styles.fileInput} />
           </div>
-          <button onClick={handleUpdateProfile} className={styles.updateButton}>
+
+          <button onClick={handleUpdateProfile} className={`${styles.button} ${styles.updateButton}`}>
             Update Profile
           </button>
-          <button onClick={handleDeleteAccount} className={styles.deleteButton}>
+          <button onClick={handleDeleteAccount} className={`${styles.button} ${styles.deleteButton}`}>
             Delete Account
           </button>
-          <button onClick={() => router.push("/change-password")} className={styles.passwordButton}>
+          <button onClick={() => router.push("/change-password")} className={`${styles.button} ${styles.passwordButton}`}>
             Change Password
           </button>
         </>
+      ) : (
+        <p>Loading profile...</p>
       )}
     </div>
   );

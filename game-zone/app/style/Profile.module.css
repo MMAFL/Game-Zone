@@ -1,0 +1,102 @@
+.profileContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #121212;
+    color: white;
+    min-height: 100vh;
+}
+
+.avatarContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.avatar {
+    border-radius: 50%;
+    border: 3px solid #6a0dad;
+    object-fit: cover;
+}
+
+.username {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.fullName {
+    font-size: 18px;
+    color: #bbb;
+    margin-bottom: 20px;
+}
+
+.avatarSelection {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.avatarOption {
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: transform 0.3s ease, border 0.3s ease;
+}
+
+.avatarOption:hover {
+    transform: scale(1.1);
+    border-color: #6a0dad;
+}
+
+.selectedAvatar {
+    border: 3px solid #6a0dad;
+    border-radius: 50%;
+}
+
+.fileInput {
+    margin-top: 10px;
+    color: white;
+}
+
+.button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 200px;
+    border: none;
+}
+
+.updateButton {
+    background-color: #6a0dad;
+    color: white;
+}
+
+.updateButton:hover {
+    background-color: #5a0cad;
+}
+
+.deleteButton {
+    background-color: red;
+    color: white;
+}
+
+.deleteButton:hover {
+    background-color: darkred;
+}
+
+.passwordButton {
+    background-color: #3085d6;
+    color: white;
+}
+
+.passwordButton:hover {
+    background-color: #2565c6;
+}
