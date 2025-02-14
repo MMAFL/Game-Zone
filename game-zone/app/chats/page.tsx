@@ -9,7 +9,7 @@ const socket = io("http://localhost:5000");
 
 export default function ChatsPage() {
   const [rooms, setRooms] = useState([]);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
   const [token, setToken] = useState("");
