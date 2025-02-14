@@ -15,7 +15,8 @@ interface Game {
 
 interface User {
   id: number;
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   createdAt: Date;
 }
@@ -87,7 +88,7 @@ export default function Dashboard() {
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
-      
+
       <div className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Games</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -129,7 +130,7 @@ export default function Dashboard() {
           <tbody>
             {users.map((user) => (
               <tr key={user.id}>
-                <td className="border p-2">{user.name}</td>
+                <td className="border p-2">{user.first_name + " " + user.last_name}</td>
                 <td className="border p-2">{user.email}</td>
                 <td className="border p-2">{new Date(user.createdAt).toLocaleDateString()}</td>
                 <td className="border p-2">

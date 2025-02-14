@@ -4,6 +4,24 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/authContext";
 import Link from "next/link";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
+// Add password validation function
+const validatePassword = (password: string): { isValid: boolean; error: string } => {
+    if (password.length < 8) {
+        return { isValid: false, error: "Password must be at least 8 characters long" };
+    }
+    if (!/[A-Z]/.test(password)) {
+        return { isValid: false, error: "Password must contain at least one uppercase letter" };
+    }
+    if (!/[a-z]/.test(password)) {
+        return { isValid: false, error: "Password must contain at least one lowercase letter" };
+    }
+    if (!/[0-9]/.test(password)) {
+        return { isValid: false, error: "Password must contain at least one number" };
+    }
+    return { isValid: true, error: "" };
+};
 
 export default function RegisterForm() {
     const [formData, setFormData] = useState({
@@ -20,6 +38,8 @@ export default function RegisterForm() {
     const [error, setError] = useState("");
     const router = useRouter();
     const { login } = useAuth();
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -32,6 +52,13 @@ export default function RegisterForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+
+        // Password validation
+        const passwordValidation = validatePassword(formData.password);
+        if (!passwordValidation.isValid) {
+            setError(passwordValidation.error);
+            return;
+        }
 
         // Validate passwords match
         if (formData.password !== formData.confirmPassword) {
@@ -166,30 +193,59 @@ export default function RegisterForm() {
                     <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                         Password
                     </label>
-                    <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        required
-                        value={formData.password}
-                        onChange={handleChange}
-                        className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                    />
+                    <div className="relative">
+                        <input
+                            id="password"
+                            name="password"
+                            type={showPassword ? "text" : "password"}
+                            required
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                        >
+                            {showPassword ? (
+                                <FaEyeSlash className="h-5 w-5 text-gray-400" />
+                            ) : (
+                                <FaEye className="h-5 w-5 text-gray-400" />
+                            )}
+                        </button>
+                    </div>
+                    <p className="mt-1 text-sm text-gray-500">
+                        Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number
+                    </p>
                 </div>
 
                 <div>
                     <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
                         Confirm Password
                     </label>
-                    <input
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        type="password"
-                        required
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                    />
+                    <div className="relative">
+                        <input
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            type={showConfirmPassword ? "text" : "password"}
+                            required
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                        >
+                            {showConfirmPassword ? (
+                                <FaEyeSlash className="h-5 w-5 text-gray-400" />
+                            ) : (
+                                <FaEye className="h-5 w-5 text-gray-400" />
+                            )}
+                        </button>
+                    </div>
                 </div>
 
                 <div>
