@@ -94,7 +94,7 @@ export default function RegisterForm() {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
-                            username: formData.username,  // Make sure this matches
+                            username: formData.username,
                             password: formData.password,
                         }),
                     });
@@ -102,7 +102,12 @@ export default function RegisterForm() {
                     if (loginResponse.ok) {
                         const loginData = await loginResponse.json();
                         login(loginData.token, loginData.user);
-                        router.push("/"); // Redirect to home page
+                        // Redirect based on user role
+                        if (loginData.user.role === 'admin') {
+                            router.push("/dashboard");
+                        } else {
+                            router.push("/");
+                        }
                     } else {
                         const errorData = await loginResponse.json();
                         console.error("Login error:", errorData);

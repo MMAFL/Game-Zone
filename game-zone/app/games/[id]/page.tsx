@@ -7,6 +7,7 @@ export default function GameDetail({ params }: { params: { id: string } }) {
 
   return (
     <div>
+      
       <h1>{game.title}</h1>
       <p>{game.description}</p>
     </div>
