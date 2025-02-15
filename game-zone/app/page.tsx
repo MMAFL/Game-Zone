@@ -26,12 +26,6 @@ const Home: React.FC = () => {
       <SearchAndCategory setSearchQuery={setSearchQuery} setCategoryId={setCategoryId} />
       <GameList searchQuery={searchQuery} categoryId={categoryId} />
       <Footer />
-      <button onClick={() => setChatOpen(!chatOpen)} className="chatButton">
-        {chatOpen ? "Close Chat" : "Open Chat"}
-      </button>
-      {chatOpen && roomId === null && <RoomSelection onRoomSelect={handleRoomSelect} />}
-      {chatOpen && roomId !== null && <Chat roomId={roomId} />}
-      <ChatList />
     </div>
   );
 };

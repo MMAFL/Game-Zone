@@ -6,6 +6,7 @@ interface RoomListProps {
 }
 
 const RoomList: React.FC<RoomListProps> = ({ rooms, onSelectRoom }) => {
+console.log("rooms",rooms);
   return (
     <div className="room-list">
       <h2 className="text-2xl font-bold mb-4">Rooms</h2>

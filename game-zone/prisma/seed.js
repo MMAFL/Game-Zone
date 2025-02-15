@@ -130,6 +130,35 @@ function main() {
                 case 5:
                     // Add messages to rooms
                     _a.sent();
+                    // Add user-room relationships
+                    return [4 /*yield*/, prisma.userrooms.createMany({
+                            data: [
+                                {
+                                    user_id: user1.id,
+                                    room_id: room1.id,
+                                    joined_at: new Date(),
+                                    createdAt: new Date(),
+                                    updatedAt: new Date(),
+                                },
+                                {
+                                    user_id: user2.id,
+                                    room_id: room2.id,
+                                    joined_at: new Date(),
+                                    createdAt: new Date(),
+                                    updatedAt: new Date(),
+                                },
+                                {
+                                    user_id: user1.id,
+                                    room_id: room2.id,
+                                    joined_at: new Date(),
+                                    createdAt: new Date(),
+                                    updatedAt: new Date(),
+                                },
+                            ],
+                        })];
+                case 6:
+                    // Add user-room relationships
+                    _a.sent();
                     console.log('Seed data created successfully');
                     return [2 /*return*/];
             }

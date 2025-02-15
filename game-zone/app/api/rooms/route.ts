@@ -1,23 +1,69 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
+const SECRET_KEY = process.env.JWT_SECRET || 'your-secret-key';
 
-// GET all ROOMS BY TOKEN MEANS USERiD
-export async function GET() {
+// Middleware to extract user ID from token
+async function getUserIdFromToken(req: NextRequest) {
+  const token = req.headers.get('authorization')?.split(' ')[1];
+  if (!token) {
+    throw new Error('No token provided');
+  }
+
   try {
-    const categories = await prisma.messages.findMany();
-    return NextResponse.json(categories);
+    const decoded = jwt.verify(token, SECRET_KEY);
+    if (typeof decoded === 'string') {
+      throw new Error('Invalid token payload');
+    }
+    return (decoded as jwt.JwtPayload).userId;
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch categories" }, { status: 500 });
+    throw new Error('Invalid token');
   }
 }
-// create a new room with user ids
-export async function POST() {
-    try {
-      const categories = await prisma.categories.findMany();
-      return NextResponse.json(categories);
-    } catch (error) {
-      return NextResponse.json({ error: "Failed to fetch categories" }, { status: 500 });
-    }
+
+// GET all rooms created by and joined by the user
+export async function GET(req: NextRequest) {
+  try {
+    const userId = await getUserIdFromToken(req);
+
+    // Fetch rooms created by the user
+   
+
+    // Fetch rooms joined by the user
+    const joinedRooms = await prisma.rooms.findMany({
+      where: {
+        userrooms: {
+          some: {
+            user_id: userId,
+          },
+        },
+      },
+    });
+
+    // Combine both created and joined rooms
+    const allRooms = [ ...joinedRooms];
+
+    return NextResponse.json(allRooms);
+  } catch (error) {
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
+}
+
+// Create a new room with user id
+export async function POST(req: NextRequest) {
+  try {
+    const userId = await getUserIdFromToken(req);
+    const { name } = await req.json();
+    const newRoom = await prisma.rooms.create({
+      data: {
+        name,
+        created_by: userId,
+      },
+    });
+    return NextResponse.json(newRoom);
+  } catch (error) {
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+  }
+}

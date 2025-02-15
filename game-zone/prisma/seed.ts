@@ -86,6 +86,33 @@ async function main() {
     ],
   });
 
+  // Add user-room relationships
+  await prisma.userrooms.createMany({
+    data: [
+      {
+        user_id: user1.id,
+        room_id: room1.id,
+        joined_at: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        user_id: user2.id,
+        room_id: room2.id,
+        joined_at: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        user_id: user1.id,
+        room_id: room2.id,
+        joined_at: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ],
+  });
+
   console.log('Seed data created successfully');
 }
 

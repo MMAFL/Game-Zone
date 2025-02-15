@@ -1,95 +1,71 @@
-/* GameCard.module.css */
-
 .gameCard {
-    position: relative;
-    width: 250px;
-    height: 320px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    background-color: #1f1f1f;
-    cursor: pointer;
-  }
-  
-  .gameCard:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-  }
-  
-  .gameImage {
-    position: relative;
-    width: 100%;
-    height: 180px;
-  }
-  
-  .gameDetails {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 15px;
-    color: #fff;
-    transition: transform 0.3s ease-in-out;
-    transform: translateY(100%);
-  }
-  
-  .gameCard:hover .gameDetails {
-    transform: translateY(0);
-  }
-  
-  .gameDetails h3 {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0;
-    text-align: center;
-    color: #f0f0f0;
-  }
-  
-  .gameInfo {
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  .gameDescription {
-    font-size: 14px;
-    color: #bbb;
-  }
-  
-  .gameCategory {
-    font-size: 12px;
-    color: #6a0dad; /* Purple color for category */
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  
-  @media (max-width: 768px) {
-    .gameCard {
-      width: 200px;
-      height: 280px;
-    }
-  
-    .gameDetails h3 {
-      font-size: 16px;
-    }
-  
-    .gameDescription {
-      font-size: 12px;
-    }
-  
-    .gameCategory {
-      font-size: 11px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .gameCard {
-      width: 100%;
-      height: auto;
-    }
-  
-    .gameDetails {
-      padding: 10px;
-    }
-  }
-  
+  position: relative;
+  width: 300px;
+  height: 250px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #1f1f1f;
+  cursor: pointer;
+}
+
+.gameCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.gameImage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.gameDetails {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 15px;
+  color: #fff;
+  text-align: center;
+}
+
+.gameDetails h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  color: #f0f0f0;
+}
+
+/* Details Box - Appears on Top of Card */
+.detailsBox {
+  position: absolute;
+  top: -10px; /* Moves the box above the game card */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 250px;
+  background-color: black;
+  border: 2px solid purple;
+  padding: 10px;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); */
+  border-radius: 8px;
+  z-index: 3000; /* Ensures it stays above other elements */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* Show details box on hover */
+.gameCard:hover .detailsBox {
+  opacity: 1;
+  visibility: visible;
+}
+
+.detailsBox p {
+  margin: 5px 0;
+}

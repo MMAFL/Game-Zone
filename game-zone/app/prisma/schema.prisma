@@ -103,7 +103,6 @@ model users {
 enum users_sexe {
   male
   female
-  other
 }
 
 enum users_role {
