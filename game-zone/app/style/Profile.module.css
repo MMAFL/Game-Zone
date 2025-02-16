@@ -1,0 +1,266 @@
+
+.profileContainer {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(147, 51, 234, 0.3);
+  color: #ffffff;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #1a1a1a;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #2d2d2d;
+  border-top: 4px solid #9333ea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.returnButton {
+  padding: 0.6rem 1.2rem;
+  background-color: #2d2d2d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  margin: 30px;
+  margin-left: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.returnButton:hover {
+  background-color: #3d3d3d;
+  transform: translateY(-2px);
+}
+
+.profileHeader {
+  /* display: flex; */
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #2d2d2d;
+  border-radius: 12px;
+}
+
+.avatarContainer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */ 
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #9333ea;
+  object-fit: cover;
+  box-shadow: 0 2px 10px rgba(147, 51, 234, 0.3);
+  
+}
+
+.userHeaderInfo {
+  flex-grow: 1;
+}
+
+.username {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.avatarSelection {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: #2d2d2d;
+  border-radius: 12px;
+}
+
+.avatarOption {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.3s ease;
+  object-fit: cover;
+}
+
+.avatarOption:hover {
+  transform: scale(1.1);
+}
+
+.selectedAvatar {
+  border-color: #9333ea;
+  transform: scale(1.1);
+}
+
+.userInfo {
+  background-color: #2d2d2d;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.userInfo p {
+  margin: 0.8rem 0;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.userInfo strong {
+  color: #9333ea;
+  margin-right: 0.5rem;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #9333ea;
+  color: white;
+}
+
+.button:hover {
+  background-color: #7928ca;
+  transform: translateY(-2px);
+}
+
+.deleteButton {
+  background-color: #dc2626;
+}
+
+.deleteButton:hover {
+  background-color: #b91c1c;
+}
+
+.formContainer {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #2d2d2d;
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.formContainer h2 {
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1.2rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.passwordInputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordInputContainer input {
+  width: 100%;
+  padding: 0.8rem;
+  padding-right: 2.5rem;
+  border: 1px solid #4d4d4d;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.passwordInputContainer input:focus {
+  outline: none;
+  border-color: #9333ea;
+  box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: #9333ea;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.passwordToggle:hover {
+  color: #7928ca;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #4d4d4d;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #9333ea;
+  box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
+}

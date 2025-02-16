@@ -12,7 +12,7 @@ interface Game {
   game_file: string;
   category_id: number;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date; 
 }
 
 interface User {
