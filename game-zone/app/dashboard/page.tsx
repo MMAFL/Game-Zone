@@ -16,6 +16,7 @@ interface Game {
 }
 
 interface User {
+
   id: number;
   first_name: string;
   last_name: string;
@@ -58,8 +59,15 @@ export default function Dashboard() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('/api/users');
+      const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+      const response = await fetch('/api/users', {
+        headers: {
+          'Authorization': `Bearer ${token}`, // Include the token in the headers
+        },
+      });
+      console.log('Response status:', response.status); // Log response status
       const data = await response.json();
+      console.log('Response data:', data); // Log response data
       if (Array.isArray(data)) {
         setUsers(data);
       } else {
@@ -67,6 +75,7 @@ export default function Dashboard() {
         setError('Invalid users data received');
       }
     } catch (err) {
+      console.error('Error fetching users:', err); // Log error
       setError('Failed to fetch users');
       setUsers([]);
     }
