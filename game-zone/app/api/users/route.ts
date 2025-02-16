@@ -20,7 +20,7 @@ async function verifyToken(request: NextRequest) {
   }
 }
 
-// ✅ Get Current User
+// ✅ Get All Users
 export async function GET(request: NextRequest) {
   try {
     const decodedToken = await verifyToken(request);
@@ -28,8 +28,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
-    const user = await prisma.users.findUnique({
-      where: { id: decodedToken.userId },
+    const users = await prisma.users.findMany({
       select: {
         id: true,
         username: true,
@@ -40,24 +39,20 @@ export async function GET(request: NextRequest) {
         address: true,
         sexe: true,
         role: true,
-  
         createdAt: true,
       },
     });
 
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-
-    return NextResponse.json(user);
+    return NextResponse.json(users);
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching users:", error);
     return NextResponse.json(
-      { error: "Error fetching user" },
+      { error: "Error fetching users" },
       { status: 500 }
     );
   }
 }
+
 export async function PUT(request: NextRequest) {
   try {
     const decodedToken = await verifyToken(request);
