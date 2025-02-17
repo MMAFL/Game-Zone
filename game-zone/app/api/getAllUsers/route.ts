@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
-// Helper function to verify JWT
 async function verifyToken(request: NextRequest) {
   const authHeader = request.headers.get("Authorization");
   console.log("authHeader:", authHeader);
@@ -21,7 +20,6 @@ async function verifyToken(request: NextRequest) {
   }
 }
 
-// ✅ Get All Users
 export async function GET(request: NextRequest) {
   try {
     const decodedToken = await verifyToken(request);
@@ -29,8 +27,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
-    const users = await prisma.users.findUnique({
-      where: { id: decodedToken.userId },
+    const users = await prisma.users.findMany({
       select: {
         id: true,
         username: true,
@@ -52,26 +49,5 @@ export async function GET(request: NextRequest) {
       { error: "Error fetching users" },
       { status: 500 }
     );
-  }
-}
-
-export async function PUT(request: NextRequest) {
-  try {
-    const decodedToken = await verifyToken(request);
-    if (!decodedToken) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-    }
-
-    const { first_name, last_name, age, address } = await request.json();
-
-    const updatedUser = await prisma.users.update({
-      where: { id: decodedToken.userId },
-      data: { first_name, last_name, age: Number(age), address },
-    });
-
-    return NextResponse.json(updatedUser);
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    return NextResponse.json({ error: "Failed to update profile" }, { status: 500 });
   }
 }
