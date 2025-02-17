@@ -241,7 +241,7 @@ const ProfilePage: React.FC = () => {
             />
           </div>
           <div className={styles.formGroup}>
-            <label>Score:</label>
+            <label>age:</label>
             <input
               type="number"
               value={formData.age}
