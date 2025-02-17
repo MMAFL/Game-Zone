@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -44,3 +44,31 @@ export async function GET(
     return NextResponse.json({ error: "Failed to fetch category" }, { status: 500 });
   }
 } 
+// DELETE a category by ID
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const categoryId = parseInt(params.id, 10);
+
+    if (isNaN(categoryId)) {
+      return NextResponse.json({ error: 'Invalid category ID' }, { status: 400 });
+    }
+
+    // Check if the category exists before attempting to delete
+    const existingCategory = await prisma.categories.findUnique({
+      where: { id: categoryId },
+    });
+
+    if (!existingCategory) {
+      return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+    }
+
+    await prisma.categories.delete({
+      where: { id: categoryId },
+    });
+
+    return NextResponse.json({ message: 'Category deleted successfully' }, { status: 200 });
+  } catch (error) {
+    console.error('Error deleting category:', error);
+    return NextResponse.json({ error: 'Failed to delete category' }, { status: 500 });
+  }
+}

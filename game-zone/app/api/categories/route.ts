@@ -16,12 +16,24 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    
+
     if (!body || !body.name) {
       return NextResponse.json({ error: 'Name is required' }, { status: 400 });
     }
 
     const { name } = body;
+
+    // Check if the category already exists
+    const existingCategory = await prisma.categories.findUnique({
+      where: { name }
+    });
+
+    if (existingCategory) {
+      return NextResponse.json(
+        { error: 'Category already exists' },
+        { status: 409 } // Conflict status code
+      );
+    }
 
     const newCategory = await prisma.categories.create({
       data: {
@@ -37,25 +49,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to create category' }, { status: 500 });
   }
 }
-
-// // Handle DELETE requests (delete a category)
-// export async function DELETE(req: NextRequest) {
-//   try {
-//     const { id } = req.query; // Get the category ID from the query string
-    
-//     if (!id || isNaN(Number(id))) {
-//       return NextResponse.json({ error: 'Invalid category ID' }, { status: 400 });
-//     }
-
-//     const categoryId = Number(id);
-
-//     const deletedCategory = await prisma.categories.delete({
-//       where: { id: categoryId },
-//     });
-
-//     return NextResponse.json(deletedCategory, { status: 200 });
-//   } catch (error) {
-//     console.error("Error deleting category:", error);
-//     return NextResponse.json({ error: 'Failed to delete category' }, { status: 500 });
-//   }
-// }
