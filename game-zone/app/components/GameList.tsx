@@ -30,7 +30,8 @@ const GameList: React.FC<GameListProps> = ({ searchQuery, categoryId }) => {
       }
       const url = new URL(`/api/games`, window.location.origin);
       if (searchQuery) url.searchParams.append("search", searchQuery);
-      if (categoryId) url.searchParams.append("category", categoryId.toString());
+      if (categoryId)
+        url.searchParams.append("category", categoryId.toString());
 
       try {
         const res = await fetch(url.toString());
@@ -54,11 +55,14 @@ const GameList: React.FC<GameListProps> = ({ searchQuery, categoryId }) => {
     <div id="gamesSection" className={styles.AllgameList}>
       {loading && <p className="searchMessage">Loading games...</p>}
       {!loading && message && searchQuery && (
-        <p style={{ color: "white" }} className="searchMessage">{message}</p>
+        <p style={{ color: "white" }} className="searchMessage">
+          {message}
+        </p>
       )}
       <div className={styles.gameList}>
         {games.map((game) => (
           <GameCard
+            id={game.id}
             key={game.id}
             title={game.title}
             description={game.description}
