@@ -34,7 +34,7 @@ export default function Navbar() {
                 {user?.role === "admin" && (
                    <>
                     <li><Link href="/dashboard/addGames">Add a Game</Link></li>
-                    <li><Link href="/dashboard/categories">Add a Category</Link></li>
+                    <li><Link href="/dashboard/categories/addCategory">Add a Category</Link></li>
                     </>
                     
                 )}
