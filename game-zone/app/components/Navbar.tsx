@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { FaRegCircleUser } from "react-icons/fa6";
 import styles from "../style/Navbar.module.css"; // Correct import
-import { useAuth } from "@/app/context/authContext";
+import { useAuth } from "../context/authContext";
 
 interface User {
   role: "player" | "admin" | null;

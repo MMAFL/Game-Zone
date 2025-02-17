@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import JSZip from 'jszip';
-import prisma from "@/app/lib/prisma";
+import prisma from "../../lib/prisma";
 
 // const prisma = new PrismaClient();
 
