@@ -37,6 +37,7 @@ const GameList: React.FC<GameListProps> = ({ searchQuery, categoryId }) => {
         const res = await fetch(url.toString());
         const data = await res.json();
         setGames(data);
+        console.log(data);
         if ((searchQuery || categoryId !== null) && data.length === 0) {
           setMessage("No games found. Try a different search or a category.");
         } else if (data.length > 0) {
@@ -66,7 +67,7 @@ const GameList: React.FC<GameListProps> = ({ searchQuery, categoryId }) => {
             key={game.id}
             title={game.title}
             description={game.description}
-            category={game.categories.name}
+            category={game.categories?.name}
             thumbnail={game.thumbnail}
           />
         ))}

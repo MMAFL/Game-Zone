@@ -1,50 +1,45 @@
-# React + TypeScript + Vite
+# 🍄 Mushroom Kingdom 🍄
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A multiplayer game starter built with React Three Fibre (R3F), Node.js, Socket.io & Vite.
 
-Currently, two official plugins are available:
+Mobile controls using nippleJS and WASD movement controls on desktop.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![React Three Fibre Multiplayer Game](/screenshot.png)
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+-  Create a .env file in the root of the project and populate it with the following for local dev
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+ENVIRONMENT=local
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+-  Install
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm i
 ```
+
+## Usage
+
+```bash
+npm run dev
+```
+
+Server localhost:8080
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
+
+Suggestions with improving the server and moving from Socket.io would be much appreciated
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+## 3D Assets 
+
+[Nature Pack](https://quaternius.com/)
+
