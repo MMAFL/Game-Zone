@@ -1,6 +1,12 @@
 "use client"; // Required for state management in Next.js
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 // Define user types
 interface User {
@@ -25,7 +31,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // Hook to use Auth Context
 export function useAuth() {
   const context = useContext(AuthContext);
-  console.log("context", context);
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
@@ -67,7 +72,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isAuthenticated }}>
+    <AuthContext.Provider
+      value={{ user, token, login, logout, isAuthenticated }}
+    >
       {children}
     </AuthContext.Provider>
   );

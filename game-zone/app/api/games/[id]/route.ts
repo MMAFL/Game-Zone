@@ -7,31 +7,6 @@ const path = require("path");
 
 const prismaClient = new PrismaClient();
 
-// **CREATE** - Add a new game
-// export async function POST(request: Request) {
-//   try {
-//     const body = await request.json();
-//     const newGame = await prisma.games.create({
-//       data: {
-//         title: body.title,
-//         description: body.description,
-//         thumbnail: body.thumbnail,
-//         game_file: body.game_file,
-//         category_id: body.category_id || null, // Set category ID if provided
-//         createdAt: new Date(),
-//         updatedAt: new Date(),
-//       },
-//     });
-
-//     return NextResponse.json(newGame, { status: 201 });
-//   } catch (error) {
-//     return NextResponse.json(
-//       { message: "Error creating game", error },
-//       { status: 500 }
-//     );
-//   }
-// }
-
 // **READ** - Get all games
 export async function GET() {
   try {
@@ -93,86 +68,6 @@ export async function DELETE(
     );
   }
 }
-
-// export async function GET(
-//   request: Request,
-//   { params }: { params: { id: string } }
-// ) {
-//   try {
-//     const game = await prisma.games.findUnique({
-//       where: {
-//         id: parseInt(params.id)
-//       },
-//       include: {
-//         categories: true
-//       }
-//     });
-
-//     if (!game) {
-//       return NextResponse.json({ error: "Game not found" }, { status: 404 });
-//     }
-
-//     return NextResponse.json(game);
-//   } catch (error) {
-//     return NextResponse.json({ error: "Failed to fetch game" }, { status: 500 });
-//   }
-// }
-
-// export async function PUT(
-//   request: Request,
-//   { params }: { params: { id: string } }
-// ) {
-//   try {
-//     const { title, description, thumbnail, category_id } = await request.json();
-
-//     const updatedGame = await prisma.games.update({
-//       where: {
-//         id: parseInt(params.id)
-//       },
-//       data: {
-//         title,
-//         description,
-//         thumbnail,
-//         category_id,
-//         updatedAt: new Date()
-//       }
-//     });
-//     return NextResponse.json(updatedGame);
-//   } catch (error) {
-//     return NextResponse.json({ error: "Failed to update game" }, { status: 500 });
-//   }
-// }
-
-// export async function POST(
-//   request: Request,
-//   { params }: { params: { id: string } }
-// ) {
-//   try {
-//     const { id } = params; // Extract the `id` from the URL
-
-//     // Validate the `id`
-//     if (!id || isNaN(Number(id))) {
-//       return NextResponse.json({ message: "Invalid game ID" }, { status: 400 });
-//     }
-
-//     // Simulate starting the game (replace with your logic)
-//     console.log(`Starting game with ID: ${id}`);
-
-//     // Return the `id` in the response
-//     return NextResponse.json(
-//       { message: "Game started successfully", id },
-//       { status: 200 }
-//     );
-//   } catch (error) {
-//     console.error("Error starting the game:", error);
-//     return NextResponse.json(
-//       { message: "Internal server error" },
-//       { status: 500 }
-//     );
-//   }
-// }
-
-//////////////////:
 
 export async function POST(request: NextRequest) {
   try {
