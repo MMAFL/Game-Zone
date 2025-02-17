@@ -64,6 +64,7 @@ const ProfilePage: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
+    console.log(user)
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -79,6 +80,7 @@ const ProfilePage: React.FC = () => {
         if (!res.ok) throw new Error("Failed to fetch user");
 
         const data = await res.json();
+        console.log("user" , data)
         setUser(data);
         setSelectedAvatar(data.avatar || avatars[0]);
         setFormData({

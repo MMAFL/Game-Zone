@@ -60,7 +60,7 @@ export default function Dashboard() {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-      const response = await fetch('/api/users', {
+      const response = await fetch('/api/getAllUsers', {
         headers: {
           'Authorization': `Bearer ${token}`, // Include the token in the headers
         },
@@ -81,16 +81,16 @@ export default function Dashboard() {
     }
   };
 
-  const deleteGame = async (id: number) => {
-    if (confirm('Are you sure you want to delete this game?')) {
-      const response = await fetch(`/api/games/${id}`, {
-        method: 'DELETE',
-      });
-      if (response.ok) {
-        fetchGames();
-      }
-    }
-  };
+  // const deleteGame = async (id: number) => {
+  //   if (confirm('Are you sure you want to delete this game?')) {
+  //     const response = await fetch(`/api/games/${id}`, {
+  //       method: 'DELETE',
+  //     });
+  //     if (response.ok) {
+  //       fetchGames();
+  //     }
+  //   }
+  // };
 
   const deleteUser = async (id: number) => {
     if (confirm('Are you sure you want to delete this user?')) {
