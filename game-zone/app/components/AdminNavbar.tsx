@@ -58,7 +58,7 @@ export default function Navbar() {
                             </>
                         ) : (
                             <>
-                                <span>Welcome, {user?.username}!</span>
+                                {/* <span>Welcome, {user?.username}!</span> */}
                                 {user?.role === "player" && (
                                     <button onClick={logout}>Log Out</button>
                                 )}
